@@ -4,232 +4,288 @@
   <meta charset="UTF-8">
   <title>Iglesia Buenas Nuevas – Lista de Regalos por Fases</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- [ALL YOUR STYLES, UNCHANGED] -->
   <style>
-    /* ...[SNIP]... (keep all your CSS as above) ...[SNIP]... */
-    /* Use all your style code exactly as you have it! */
-  </style>
+:root {
+  --bg: #181818;
+  --card: #23283a;
+  --ink: #ffffff;
+  --ink2: #aac;
+  --ink3: #d6eaff;
+  --cyan: #6ef;
+  --price: #7fa;
+  --accent: #ff9100;
+  --shadow: 0 1px 5px #0003;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 1em;
+}
+h1 { margin: 0 0 .6em 0; }
+h2 { color: var(--cyan); margin-top: 1.7em; margin-bottom: 0.1em; }
+.en { color: var(--ink2); font-size: 0.93em; margin: 0 0 0.7em 0; }
+
+.phase-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2em;
+  margin: 2.2em 0;
+  justify-content: center;
+}
+.item {
+  width: 220px;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 0.7em 0.5em 0.9em;
+  text-align: center;
+  box-shadow: var(--shadow);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.item img {
+  max-width: 100%;
+  max-height: 100px;
+  border-radius: 6px;
+  background: #111;
+  margin-top: 0.6em;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+  object-fit: cover;
+}
+.item img:hover { transform: scale(1.03); }
+.item-title {
+  font-size: 1.05em;
+  font-weight: 700;
+  margin: 0.5em 0 0.2em;
+}
+.price { color: var(--price); font-weight: 700; }
+.qty { font-size: 0.95em; color: #fff9; margin-bottom: 0.3em; }
+.desc {
+  font-size: 0.95em;
+  color: var(--ink3);
+  margin-bottom: 0.3em;
+  white-space: pre-line;
+}
+
+/* Badges */
+.badge {
+  position: absolute;
+  top: -8px; left: -8px; right: -8px;
+  background: #ff3b3b;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9em;
+  border-radius: 8px 8px 0 0;
+  padding: 0.4em 0.2em;
+  box-shadow: 0 0 4px #0005;
+  text-shadow: 0 0 2px #000a;
+}
+.badge.yellow { background: #ffd93b; color: #222; text-shadow: none; }
+.badge.green {
+  background: #00ff80;
+  color: #003300;
+  animation: neonflash 1s linear infinite alternate;
+  box-shadow: 0 0 6px #00ff80;
+}
+@keyframes neonflash {
+  0% { opacity: 1; box-shadow: 0 0 4px #00ff80, 0 0 10px #00ff80; }
+  100% { opacity: 0.6; box-shadow: 0 0 6px #00ff80, 0 0 14px #00ff80; }
+}
+
+/* Modal */
+.modal-img-bg {
+  display: none;
+  position: fixed; z-index: 1000;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.84);
+  justify-content: center; align-items: center;
+}
+.modal-img-bg.active { display: flex; }
+.modal-img-bg img {
+  max-width: 94vw; max-height: 88vh;
+  border-radius: 13px;
+  box-shadow: 0 2px 15px #000a;
+}
+.modal-img-bg:after {
+  content: "✕";
+  position: absolute;
+  top: 1em; right: 1.3em;
+  color: #fff;
+  font-size: 2.2em;
+  font-weight: bold;
+  cursor: pointer;
+}
+@media (max-width: 520px) {
+  .item { width: 98vw; max-width: 99vw; }
+}
+</style>
 </head>
 <body>
 
-  <!-- ===== Your static content goes here ===== -->
-  <h1>Iglesia Buenas Nuevas - Registro de sistemas de sonido</h1>
-  <h2>
-    <span style="color:#aac;font-size:1.3em;">Good News Church - Sound System Registry</span>
+<h1>Iglesia Buenas Nuevas - Registro de sistemas de sonido</h1>
+<h2><span class="en" style="color:#aac;font-size:1.3em;">Good News Church - Sound System Registry</span></h2>
+
+<!-- =========================
+     TESTIMONIO DE BENDICIÓN / BLESSING TESTIMONY
+     ========================= -->
+<div class="top-card" style="margin:2.2em 0 2.2em 0; border-top:4px solid #ff9100;">
+  <div class="glory-flash" style="margin-top:1.0em;">¡Toda la gloria a Él!</div>
+  <p>Dios ya ha comenzado a bendecir este proyecto...</p>
+  <div class="glory-flash" style="margin-top:1.0em;">To God be the glory!</div>
+  <p>God is already starting to bless us in this project...</p>
+</div>
+
+<!-- INTRO STORY -->
+<div class="top-card" style="margin:2.2em 0 2.2em 0; border-top:4px solid #ff9100;">
+  <h2 style="color:#ff9100; margin-top:1em;">
+  El Corazón Detrás del Proyecto / The Heart Behind the Project
   </h2>
+  <p>¡Hola familia! Gracias por apoyar el ministerio de sonido...</p>
+  <hr style="border:none; border-top:1px solid #ff9100; margin:1.2em 0;">
+  <p>Hello family! Thank you for supporting our sound ministry...</p>
+</div>
 
-  <!-- All the "testimony", "heart behind", instructions, notes, QR, etc stays here -->
+<!-- INSTRUCTIONS -->
+<div class="note" style="margin:2.2em 0; border-top:4px solid #ff9100;">
+  <h2 style="color:#ff9100; margin-top:1em;">
+  ¿Cómo Funciona la Lista por Fases? / How the Phase List Works
+  </h2>
+  <p>Hemos dividido la lista en fases...</p>
+</div>
 
-  <!-- 
-    REMOVE ALL <div class="phase-items"></div> from your HTML.
-    The script below will generate all phases and item cards automatically!
-  -->
+<!-- ORDERING NOTE + TOP QR -->
+<div class="note" style="margin-top:2.2em; border-top:4px solid #ff9100;">
+  <h2 style="color:#ff9100; margin-top:1em;">¿Cómo Hacer Tu Pedido? / How to Order</h2>
+  <p>Por favor, ordene solamente desde nuestro registro oficial...</p>
+</div>
 
-  <!-- 
-    Just put ONE empty container where you want the full list to go:
-  -->
-  <div id="dynamic-phases"></div>
-
-  <!-- Only ONE modal image block! -->
-  <div class="modal-img-bg" id="imgModal" onclick="this.classList.remove('active')">
-    <img id="modalImg" src="">
+<div class="registry-actions">
+  <div class="qr">
+    <img alt="QR – Registry" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https%3A%2F%2Fwww.amazon.com%2Fregistries%2Fgl%2Fguest-view%2F1E6GZIQ5MG9GC">
+    <div class="cap">Escanea para ver el registro<br><small>Scan to view the registry</small></div>
   </div>
+  <div class="flash-reminder">
+    <span>¡No olvides buscar cupones de descuento antes de comprar!</span><br>
+    <span style="font-size:0.98em">Don’t forget to check for coupons before you order!</span>
+  </div>
+  <a class="button" href="https://www.amazon.com/registries/gl/guest-view/1E6GZIQ5MG9GC" target="_blank">🛒 Ordenar aquí / Order Here</a>
+</div>
 
-  <!-- =================== SCRIPT STARTS HERE =================== -->
-  <script>
-/*** ===== CONFIG ===== ***/
+<!-- =========================
+     FASES (1–6)
+     ========================= -->
+<h2>🧱 Fase 1 – Sistema de Sonido Base<br><span class="en" style="color:#aac; font-size:0.82em;">Phase 1 – Core Sound System Infrastructure</span></h2>
+<div id="phase-items-1" class="phase-items"></div>
+
+<h2>🎤 Fase 2 – Micrófonos, Monitores y Accesorios<br><span style="color:#aac; font-size:0.82em;">Phase 2 – Microphones, Monitors, and Accessories</span></h2>
+<div id="phase-items-2" class="phase-items"></div>
+
+<h2>📡 Fase 3 – Mástil de Antenas y Cables<br><span style="color:#aac; font-size:0.82em;">Phase 3 – Antenna Mast & Cabling</span></h2>
+<div id="phase-items-3" class="phase-items"></div>
+
+<h2>🎚️ Fase 4 – Mezcladora Avanzada<br><span style="color:#aac; font-size:0.82em;">Phase 4 – Advanced Mixer Setup</span></h2>
+<div id="phase-items-4" class="phase-items"></div>
+
+<h2>🎧 Fase 5 – Monitoreo Personal<br><span style="color:#aac; font-size:0.82em;">Phase 5 – Personal Monitoring System</span></h2>
+<div id="phase-items-5" class="phase-items"></div>
+
+<h2>💡 Fase 6 – Extras y Optimización<br><span style="color:#aac; font-size:0.82em;">Phase 6 – Extras & Optimization</span></h2>
+<div id="phase-items-6" class="phase-items"></div>
+
+<!-- API SCRIPT -->
+<script>
 const API_URL = "https://script.google.com/macros/s/AKfycbxTvUMgfiDCpxxtgXBpSaR0JxOAWcqUzXL_mvo6Q-k6Oae9GD5zUC3C9-RAZdKgYpV_yw/exec";
 
-/*** ===== SMALL HELPERS ===== ***/
-const $ = s => document.querySelector(s);
-function el(tag, attrs={}, ...children){
-  const n = document.createElement(tag);
-  for (const [k,v] of Object.entries(attrs||{})){
-    if (k === "class") n.className = v;
-    else if (k === "html") n.innerHTML = v;
-    else if (k.startsWith("on") && typeof v === "function") n.addEventListener(k.substring(2), v);
-    else n.setAttribute(k, v);
-  }
-  for (const c of children) if (c!=null) n.appendChild(typeof c==="string"?document.createTextNode(c):c);
-  return n;
-}
-function normKey(s){
-  return String(s||"").toLowerCase()
-    .replace(/\(.*?\)/g,"")   // drop (ES)/(EN) etc
-    .replace(/[^a-z0-9]+/g,""); // remove spaces/punct
-}
-function pick(obj, candidates){
-  // return first non-empty value matching any candidate keyword
-  const keys = Object.keys(obj||{});
-  for (const k of keys){
-    const nk = normKey(k);
-    for (const want of candidates){
-      if (nk === want) return obj[k];
-    }
-  }
-  return undefined;
-}
-function ensureModal(){
-  if ($("#imgModal")) return;
-  const bg = el("div", {class:"modal-img-bg", id:"imgModal"});
-  const img = el("img", {id:"modalImg", alt:""});
-  bg.appendChild(img);
-  document.body.appendChild(bg);
-  bg.addEventListener("click", e => { if (e.target === bg) bg.classList.remove("active"); });
-}
-function enlargeImg(img){
-  ensureModal();
-  $("#modalImg").src = img.src;
-  $("#imgModal").classList.add("active");
+function enlargeImg(img) {
+  const m = document.getElementById("imgModal");
+  document.getElementById("modalImg").src = img.src;
+  m.classList.add("active");
+  m.onclick = () => m.classList.remove("active");
 }
 
-/*** ===== PAYLOAD NORMALIZATION ===== ***/
-function arrayRowsToObjects(rows){
-  if (!Array.isArray(rows) || rows.length === 0) return [];
-  const headers = rows[0];
-  const body = rows.slice(1);
-  return body.map(r => {
-    const o = {};
-    headers.forEach((h,i)=>{ o[h||("Column"+(i+1))] = r[i]; });
-    return o;
-  });
-}
-function normalizeItems(payload){
-  // Accept: array, {items}, {data}, {result}, {rows}, etc.
-  let raw = Array.isArray(payload) ? payload
-          : Array.isArray(payload?.items) ? payload.items
-          : Array.isArray(payload?.data)  ? payload.data
-          : Array.isArray(payload?.result)? payload.result
-          : Array.isArray(payload?.rows)  ? payload.rows
-          : null;
-  if (!raw) throw new TypeError("API did not return a list.");
+function createBadge(purchased, qty) {
+  const div = document.createElement("div");
+  if (!qty || isNaN(qty)) qty = 0;
+  if (!purchased || isNaN(purchased)) purchased = 0;
 
-  // If it's an array of arrays, map using first row as headers
-  if (Array.isArray(raw[0]) && !Array.isArray(raw[0][0]) && typeof raw[0][0] !== "object"){
-    raw = arrayRowsToObjects(raw);
-  }
-
-  // Now raw is an array of objects (keys could be “Column2” or nice names)
-  return raw.map(obj => {
-    // prefer named headers, but accept ColumnN too
-    const normObj = {};
-    for (const [k,v] of Object.entries(obj)){
-      normObj[k] = typeof v === "string" ? v.trim() : v;
-    }
-
-    const phase      = Number(pick(normObj, ["phase"]));
-    const title_es   = pick(normObj, ["titlees","titlespanish","tituloes","titulo"]);
-    const title_en   = pick(normObj, ["titleen","titleenglish"]);
-    const desc_es    = pick(normObj, ["descripciones","desces","descripcion","descriptiones"]);
-    const desc_en    = pick(normObj, ["descriptionen","descen","description"]);
-    const price      = pick(normObj, ["price","precio"]);
-    const purchased  = Number(pick(normObj, ["purchased","comprado","purchases"]));
-    const quantity   = Number(pick(normObj, ["quantity","cantidad","qty"]));
-    const image      = pick(normObj, ["imagelink","imageurl","image","imagen"]);
-
-    return { phase, title_es, title_en, desc_es, desc_en, price, purchased, quantity, image };
-  }).filter(x => x.phase); // keep rows that have a phase
-}
-
-/*** ===== RENDER ===== ***/
-function phaseContainer(phaseNum){
-  let c = document.getElementById(`phase-items-${phaseNum}`);
-  if (c) return c;
-
-  // try to find the Fase N heading and insert after its intro
-  const h2s = Array.from(document.querySelectorAll("h2"));
-  const h2 = h2s.find(h => /Fase\s*([1-6])/.test(h.textContent) && Number(h.textContent.match(/Fase\s*([1-6])/)[1]) === Number(phaseNum));
-  c = el("div", {class:"phase-items", id:`phase-items-${phaseNum}`});
-  if (h2){
-    // insert after the next .phase-intro if present
-    let sib = h2.nextElementSibling;
-    if (sib && sib.classList.contains("en")) sib = sib.nextElementSibling;
-    if (sib && sib.classList.contains("phase-intro")){
-      sib.parentNode.insertBefore(c, sib.nextElementSibling);
-    } else {
-      h2.parentNode.insertBefore(c, h2.nextElementSibling);
-    }
+  if (purchased >= qty && qty > 0) {
+    div.className = "badge green";
+    div.textContent = "Completado / Completed";
+  } else if (purchased === 0) {
+    div.className = "badge";
+    div.textContent = `Comprado/Purchased ${purchased}/${qty}`;
   } else {
-    document.body.appendChild(c);
+    div.className = "badge yellow";
+    div.textContent = `Comprado/Purchased ${purchased}/${qty}`;
   }
-  return c;
-}
-function statusBadge(purchased, qty){
-  purchased = Number(purchased||0);
-  qty = Number(qty||0);
-  const wrap = el("div", {style:"font-weight:800;margin:.35em 0;"});
-  if (!qty){
-    wrap.appendChild(el("span", {style:"color:#aaa"},"—"));
-  } else if (purchased <= 0){
-    wrap.appendChild(el("span", {style:"color:#ff6b6b"}, `Comprado 0 de ${qty} · Purchased 0 of ${qty}`));
-  } else if (purchased < qty){
-    wrap.appendChild(el("span", {style:"color:#ffd166"}, `Comprado ${purchased} de ${qty} · Purchased ${purchased} of ${qty}`));
-  } else {
-    wrap.appendChild(el("span", {style:"color:#7CFC00;animation:flash .6s linear infinite alternate;display:inline-block;"}, "COMPLETO · COMPLETE"));
-  }
-  return wrap;
-}
-function cardFor(item){
-  const imgEl = el("img", {
-    src: item.image || "",
-    alt: (item.title_en || item.title_es || "Item"),
-    onclick: () => enlargeImg(imgEl)
-  });
-  const title = el("div", {class:"item-title", html:`
-    ${item.title_es || ""}<br>
-    <span style="font-size:.95em;color:#aac;">${item.title_en ? "("+item.title_en+")" : ""}</span>
-  `});
-  const qty  = el("div",{class:"qty"}, `Cantidad / Quantity: ${item.quantity ?? ""}`);
-  const price= el("div",{class:"price"}, item.price ? String(item.price) : "");
-  const desc = el("div",{class:"desc", html:`
-    ${item.desc_es || ""}<br><br>${item.desc_en || ""}
-  `});
-  const badge= statusBadge(item.purchased, item.quantity);
-
-  return el("div", {class:"item"},
-    el("div",{class:"small",style:"margin-bottom:.35em;color:#ffe53b;text-align:center;"},
-       "Toca la imagen para ampliarla · Tap image to enlarge"),
-    imgEl, badge, title, qty, price, desc
-  );
+  return div;
 }
 
-/*** ===== MAIN LOAD ===== ***/
-async function loadList(){
-  ensureModal();
-  const title = document.querySelector("h1");
-  const hint = el("div",{id:"load-hint",style:"color:#aaa;margin:.3em 0 1.2em 0;"},"Loading registry… / Cargando lista…");
-  title && title.insertAdjacentElement("afterend", hint);
+function cardFor(item) {
+  const card = document.createElement("div");
+  card.className = "item";
 
-  try{
-    const res = await fetch(API_URL, {method:"GET"});
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const text = await res.text();
-    let json; try { json = JSON.parse(text); } catch(e){ throw new Error("Invalid JSON from API."); }
+  const qty = parseInt(item.quantity) || 0;
+  const purchased = parseInt(item.purchased) || 0;
 
-    const items = normalizeItems(json);
+  const badge = createBadge(purchased, qty);
+  const img = document.createElement("img");
+  img.src = item.image_url || "";
+  img.alt = item.title_en || item.title_es || "";
+  img.onclick = () => enlargeImg(img);
 
-    // (Optional) show top message if present
-    const msg = (json.message || json.banner || "").trim?.() || "";
-    if (msg) document.body.insertBefore(el("div",{class:"note",id:"top-message"}, msg), document.body.children[1]);
+  const title = document.createElement("div");
+  title.className = "item-title";
+  title.innerHTML = `${item.title_es || ""}<br><span class='en'>${item.title_en || ""}</span>`;
 
-    // render
-    items.sort((a,b)=> (a.phase||0)-(b.phase||0));
-    for (const it of items){
-      phaseContainer(it.phase).appendChild(cardFor(it));
-    }
-  }catch(err){
-    console.error(err);
-    const errBox = el("div", {style:"color:#f66;font-size:1.05em;margin-top:1em;text-align:center;"},
-      "Error loading the registry list. Please try again later.",
-      el("div", {style:"margin-top:.35em;color:#f88;font-size:.92em;"}, String(err && err.message ? err.message : "")));
-    title && title.insertAdjacentElement("afterend", errBox);
-  }finally{
-    hint && hint.remove();
+  const price = document.createElement("div");
+  price.className = "price";
+  price.textContent = item.price ? `$${item.price}` : "";
+
+  const qtyDiv = document.createElement("div");
+  qtyDiv.className = "qty";
+  qtyDiv.textContent = qty ? `Cantidad: ${qty}` : "";
+
+  const desc = document.createElement("div");
+  desc.className = "desc";
+  desc.innerHTML = `${item.desc_es || ""}<br>${item.desc_en || ""}`;
+
+  card.append(badge, img, title, price, qtyDiv, desc);
+  return card;
+}
+
+async function loadPhaseItems(phase) {
+  try {
+    const res = await fetch(`${API_URL}?phase=${phase}`);
+    const data = await res.json();
+    const container = document.getElementById(`phase-items-${phase}`);
+    container.innerHTML = "";
+
+    // Filter out header rows or incomplete entries
+    const validItems = (data.items || []).filter(it => {
+      return (
+        it &&
+        !String(it.title_es).includes("Title") &&
+        !String(it.price).includes("Price") &&
+        it.image_url &&
+        it.image_url.startsWith("http")
+      );
+    });
+
+    validItems.forEach(it => container.append(cardFor(it)));
+  } catch (e) {
+    console.error("Error loading phase", phase, e);
   }
 }
 
-document.addEventListener("DOMContentLoaded", loadList);
+document.addEventListener("DOMContentLoaded", () => {
+  for (let i = 1; i <= 6; i++) loadPhaseItems(i);
+});
 </script>
 
-<!-- Image Modal (keep this once in your HTML) -->
-<div class="modal-img-bg" id="imgModal"><img id="modalImg" src=""></div>
+</body>
+</html>
