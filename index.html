@@ -343,127 +343,667 @@ h2 { color: var(--cyan); margin-top: 1.7em; margin-bottom: 0.1em; }
   <div id="imgModal" class="modal-img-bg">
     <img id="modalImg" src="">
   </div>
+  
+  <style>
+/* --- ITEM CARD LAYOUT --- */
+.phase-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1.2em;
+  margin: 2em 0;
+}
+
+.item {
+  flex: 1 1 215px;
+  max-width: 260px;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 0.9em 0.8em 1.1em 0.8em;
+  text-align: center;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* --- BADGE --- */
+.badge {
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  padding: 0.55em 0.5em;
+  font-weight: 700;
+  font-size: 0.95em;
+  text-align: center;
+  margin-bottom: 0.7em; /* space between badge and image */
+  color: #fff;
+}
+.badge.yellow {
+  background: #ffd93b;
+  color: #222;
+}
+.badge.green {
+  background: #00ff99;
+  color: #003300;
+  animation: flash 0.6s infinite alternate;
+  text-shadow: 0 0 6px #00ff99, 0 0 12px #00ff99;
+}
+@keyframes flash {
+  0% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
+
+/* --- IMAGE --- */
+.item img {
+  width: 100%;
+  max-height: 130px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 0.8em;
+}
+
+/* --- TEXT --- */
+.item-title {
+  font-weight: 600;
+  font-size: 1.05em;
+  margin-bottom: 0.3em;
+}
+.item-title .en {
+  font-size: 0.9em;
+  color: var(--ink2);
+}
+
+.price {
+  color: #18ff9f; /* bright mint green */
+  font-weight: 800;
+  font-size: 1.1em;
+  margin: 0.2em 0 0.4em 0;
+}
+
+.qty {
+  font-size: 0.9em;
+  color: #eee;
+  margin-bottom: 0.8em;
+}
+
+.desc {
+  font-size: 0.9em;
+  color: var(--ink3);
+  line-height: 1.4;
+  text-align: left;
+  white-space: pre-line;
+}
+
+/* Final polish pass */
+.item {
+  position: relative;
+  padding-top: 0.8em;
+  margin-top: 1.2em;
+}
+
+/* Make badge hover cleanly above image */
+.badge {
+  width: calc(100% + 1.6em);
+  margin-top: -1.4em;
+  margin-bottom: 0.9em;
+  border-radius: 10px 10px 0 0;
+  padding: 0.5em 0.2em;
+  font-weight: 700;
+  font-size: 0.95em;
+  box-shadow: 0 2px 6px #0005;
+  text-align: center;
+}
+
+.badge.green {
+  background: linear-gradient(90deg, #00d57f, #00ff9f);
+  color: #003a20;
+  text-shadow: none;
+}
+
+.badge.yellow {
+  background: linear-gradient(90deg, #ffe53b, #ffc400);
+  color: #222;
+}
+
+.badge {
+  animation: none; /* kills the seizure strobe */
+}
+
+/* Better spacing below price and between text lines */
+.price {
+  color: #32ff8e;
+  margin-bottom: 0.5em;
+}
+
+.qty {
+  color: #ddd;
+  font-size: 0.95em;
+  margin-bottom: 0.9em;
+}
+
+.desc {
+  line-height: 1.45;
+  color: #e4eeff;
+  margin-top: 0.3em;
+}
+
+/* Slightly darker card to make colors pop */
+.item {
+  background: #222a3a;
+}
+
+/* ===== FINAL SPACING + BADGE FIX ===== */
+
+.item {
+  position: relative;
+  background: #222a3a;
+  border-radius: 12px;
+  padding: 1.1em 0.8em 1.3em 0.8em;
+  margin-top: 1.6em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 1px 10px #0004;
+}
+
+.badge {
+  position: relative;
+  top: -0.4em;
+  width: 90%;
+  margin-bottom: 0.7em;
+  border-radius: 10px;
+  padding: 0.45em 0.2em;
+  font-weight: 700;
+  font-size: 0.95em;
+  text-align: center;
+  box-shadow: 0 3px 6px #0005;
+}
+
+.badge.green {
+  background: linear-gradient(90deg, #00d57f, #00ff9f);
+  color: #003a20;
+}
+
+.badge.yellow {
+  background: linear-gradient(90deg, #ffe53b, #ffc400);
+  color: #222;
+}
+
+.badge:not(.green):not(.yellow) {
+  background: linear-gradient(90deg, #ff4a4a, #ff0000);
+  color: #fff;
+}
+
+.item img {
+  margin-top: 0.4em;
+  margin-bottom: 1em;
+  max-width: 100%;
+  border-radius: 8px;
+  background: #111;
+  padding: 0.2em;
+}
+
+.price {
+  color: #00ff80;
+  font-weight: 700;
+  font-size: 1.1em;
+  margin: 0.3em 0 0.5em 0;
+}
+
+.qty {
+  color: #ccc;
+  font-size: 0.97em;
+  margin-bottom: 0.9em;
+}
+
+.desc {
+  color: #e6eeff;
+  line-height: 1.5;
+  font-size: 0.95em;
+}
+
+/* === FINAL LAYOUT POLISH === */
+
+.item {
+  position: relative;
+  background: #222a3a;
+  border-radius: 14px;
+  padding: 1.4em 1.4em 1.6em 1.4em;
+  margin: 1.8em auto;
+  width: 340px;
+  max-width: 94vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 3px 12px #0005;
+}
+
+/* Sleek smaller pill badge */
+.badge {
+  display: inline-block;
+  padding: 0.4em 1.3em;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9em;
+  margin-bottom: 1em;
+  box-shadow: 0 3px 10px #0006;
+}
+
+.badge.green {
+  background: radial-gradient(circle at center, #00ff9f 30%, #00c070 90%);
+  color: #003820;
+}
+
+.badge.yellow {
+  background: radial-gradient(circle at center, #ffe53b 30%, #ffb300 90%);
+  color: #222;
+}
+
+.badge:not(.green):not(.yellow) {
+  background: radial-gradient(circle at center, #ff4a4a 30%, #c40000 90%);
+  color: #fff;
+}
+
+.item img {
+  margin-top: 0.3em;
+  margin-bottom: 1em;
+  max-width: 100%;
+  border-radius: 10px;
+  background: #111;
+  padding: 0.2em;
+}
+
+.price {
+  color: #00ff80;
+  font-weight: 700;
+  font-size: 1.15em;
+  margin: 0.2em 0 0.5em 0;
+}
+
+.qty {
+  color: #ccc;
+  font-size: 0.97em;
+  margin-bottom: 1em;
+}
+
+/* Space between Spanish and English descriptions */
+.desc br + * {
+  display: block;
+  margin-top: 0.9em;
+}
+
+.desc {
+  color: #e6eeff;
+  line-height: 1.55;
+  font-size: 0.95em;
+  text-align: left;
+}
+
+/* === REFINEMENT PATCH === */
+
+/* Remove black background and extra padding from image */
+.item img {
+  margin-top: 0.4em;
+  margin-bottom: 1em;
+  max-width: 100%;
+  border-radius: 10px;
+  background: none;
+  padding: 0;
+  display: block;
+}
+
+/* Fix badge color contrast and size */
+.badge {
+  display: inline-block;
+  padding: 0.4em 1.2em;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9em;
+  margin-bottom: 1em;
+  box-shadow: 0 3px 10px #0006;
+}
+
+.badge.green {
+  background: linear-gradient(90deg, #00e676, #00c853);
+  color: #fff; /* white text */
+}
+
+.badge.yellow {
+  background: linear-gradient(90deg, #ffe53b, #ffb300);
+  color: #222;
+}
+
+.badge:not(.green):not(.yellow) {
+  background: linear-gradient(90deg, #ff4a4a, #c40000);
+  color: #fff;
+}
+
+/* Space between Spanish and English paragraphs */
+.desc {
+  color: #e6eeff;
+  line-height: 1.55;
+  font-size: 0.95em;
+  text-align: left;
+}
+
+.desc br {
+  display: block;
+  margin-top: 0.9em;
+  content: "";
+}
+
+.desc p {
+  margin: 0.6em 0;
+  text-align: left;
+  display: block;
+  width: 100%;
+}
+
+.badge {
+  display: inline-block;
+  margin: 0 auto 12px auto; /* centers horizontally, adds space below */
+  padding: 8px 18px;
+  border-radius: 18px;
+  font-weight: 600;
+  font-size: 0.95em;
+  text-align: center;
+  color: #fff; /* ensures visibility */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.badge.green {
+  background: linear-gradient(90deg, #00b862, #00ff8c);
+  color: #fff;
+}
+
+.badge.yellow {
+  background: linear-gradient(90deg, #ffc400, #ff9100);
+  color: #000;
+}
+
+.badge.red {
+  background: linear-gradient(90deg, #d50000, #ff1744);
+  color: #fff;
+}
+</style>
 
   <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbxTvUMgfiDCpxxtgXBpSaR0JxOAWcqUzXL_mvo6Q-k6Oae9GD5zUC3C9-RAZdKgYpV_yw/exec";
+/* =========================
+   CONFIG
+   ========================= */
+const API_URL = "https://script.google.com/macros/s/AKfycbxTvUMgfiDCpxxtgXBpSaR0JxOAWcqUzXL_mvo6Q-k6Oae9GD5zUC3C9-RAZdKgYpV_yw/exec";
 
-  function enlargeImg(img) {
-    const m = document.getElementById("imgModal");
-    document.getElementById("modalImg").src = img.src;
-    m.classList.add("active");
-    m.onclick = () => m.classList.remove("active");
+/* =========================
+   PHASE INTROS
+   ========================= */
+const phaseIntros = {
+  1: {
+    title_es: "🧱 Fase 1 – Sistema de Sonido Base",
+    title_en: "Phase 1 – Core Sound System Infrastructure",
+    sub_es: "(Infraestructura esencial de sonido: rack, energía, bandeja, router, mezcladora, entradas y salidas principales)",
+    sub_en: "(Core sound system infrastructure: rack, power, shelf, router, mixer, main inputs and outputs)",
+    
+    
+    body: `¡Esta fase es el primer gran paso como familia! Aquí estamos poniendo las bases de todo lo que viene: por fin tendremos nuestro propio sistema de sonido, listo para crecer con nosotros. Cada pieza representa una inversión en nuestra iglesia y en cada uno de nosotros—¡en unidad y con excelencia! Sí, es la etapa más costosa, pero también la más emocionante: incluye el rack donde irá todo el equipo, el mezclador que hace posible el sonido profesional, el router para conectarnos y los altavoces para escuchar con claridad, justo como debe ser. Con esta fase, ¡nuestro sueño comienza a tomar forma!
+<hr style="border:none; border-top:1px solid #ff9100; margin:1.2em 0;">
+This is our very first big step together as a church family! Here we’re laying the foundation for everything that’s to come—finally getting our own sound system, ready to grow with us. Every piece is an investment in our church and in each of us—coming together in unity and excellence! Yes, this is the most expensive phase, but it’s also the most exciting: it includes the rack for all the equipment, the mixer for professional sound, the router to connect us, and the speakers so we can finally hear every word and every note, just like it’s supposed to be. With this phase, our dream starts to become reality!`
+  },
+
+  2: {
+    title_es: "🎤 Fase 2 – Micrófonos, Monitores y Accesorios",
+    title_en: "Phase 2 – Microphones, Monitors, and Accessories",
+    sub_es: "(Sistema de micrófonos inalámbricos, baterías, cargador, e integración del sistema de monitores in-ear)",
+    sub_en: "(Wireless microphone system, batteries, charger, and integrating our in-ear monitor system)",
+    body: `Todos sabemos que hemos hecho lo posible con lo que tenemos: usando esos micrófonos básicos que venían con la bocina Bluetooth. Pero la calidad de sonido simplemente no es suficiente para una iglesia que está creciendo. Muchas veces, el eco de la sala y el volumen bajo hacen difícil entender cada palabra, y la Pastora no siempre se escucha clara. Un solo altavoz en el piso tampoco logra que todos reciban el mensaje igual de bien.
+
+Por eso, esta fase nos emociona: finalmente podremos tener micrófonos inalámbricos de verdad y equipo organizado. Vamos a guardar y cargar todos los micrófonos y baterías en un solo lugar, y cada domingo todo estará listo para servir con excelencia. Además, nuestro sistema de monitoreo personal (audífonos inalámbricos) permitirá que el equipo de alabanza se escuche perfectamente, tocando y cantando como debe ser—¡sin más calidad pobre ni soluciones temporales!
+
+Esta mejora es un paso enorme de fe y unidad, para que juntos experimentemos el sonido nítido y profesional que nuestra iglesia merece.
+<hr style="border:none; border-top:1px solid #ff9100; margin:1.2em 0;">
+We’ve all been doing our best with what we have—using those basic microphones that came with the Bluetooth speaker. But let’s be honest: the sound quality just isn’t enough for a growing church. The echo in the room and low volume make it tough to understand every word, and Pastora isn’t always as clear as we want her to be. One little floor speaker doesn’t reach everyone the way it should.
+
+That’s why this phase is so exciting: we’ll finally have real wireless microphones and an organized setup. We’ll be able to store and charge all our microphones and batteries in one place, so every Sunday everything is ready to serve with excellence. Plus, our personal in-ear monitor system (wireless headphones) will let the worship team hear each other perfectly, playing and singing the way it’s meant to be—no more poor sound or temporary fixes!
+
+This upgrade is a big step of faith and unity, so together we can experience the clear, professional sound our church truly deserves.`
+  },
+
+  3: {
+    title_es: "📡 Fase 3 – Mástil de Antenas y Cables",
+    title_en: "Phase 3 – Antenna Mast & Cabling",
+    sub_es: "(Trípode + tubo, soportes, cables BNC/RP-SMA—RF/WiFi limpio y confiable)",
+    sub_en: "(Tripod + pole, brackets, BNC/RP-SMA extensions—clean, reliable RF/Wi-Fi)",
+    body: `¡Ahora no es momento de aflojar! Cada paso nos acerca más a ese sonido excelente que anhelamos como familia. Las antenas que vamos a instalar ayudarán a que nuestros micrófonos y monitores funcionen siempre bien, sin ruidos ni pérdidas de señal, incluso cuando la iglesia esté llena o todos estén moviéndose en el escenario. Esta fase también hace que nuestro escenario se vea más limpio y seguro, con todos los cables bien organizados para un resultado profesional.
+
+Sigamos adelante con ánimo y fe, porque juntos estamos logrando algo especial para todos.
+<hr style="border:none; border-top:1px solid #ff9100; margin:1.2em 0;">
+Now’s not the time to slow down! Every step gets us closer to the amazing sound we’re building together as a family. These antennas will help our microphones and monitors work their best—no more dropouts or noisy signal, even when the church is full or everyone’s moving around up front. This phase also keeps our stage looking clean and safe, with every cable organized for a truly professional result.
+
+Let’s keep going with excitement and faith, because together we’re making something special for all of us.`
+  },
+
+  4: {
+    title_es: "💻 Fase 4 – Computadora / Central de Audio y Video",
+    title_en: "Phase 4 – Computer / Audio & Video Powerhouse",
+    sub_es: "(Gabinete, tarjeta madre, procesador, RAM, SSD, fuente de poder, ventiladores — nuestra computadora y central para grabar, transmitir y controlar todo el sistema)",
+    sub_en: "(Case, motherboard, CPU, RAM, SSD, power supply, fans — our computer and powerhouse for recording, streaming, and running everything)",
+    
+    
+    body: `¡Esta fase es donde realmente nos ponemos creativos y damos un salto enorme hacia el futuro de nuestra iglesia! En vez de comprar una computadora costosa y limitada, vamos a construir una desde cero, pieza por pieza, eligiendo solo los mejores componentes. Así obtenemos mucho más rendimiento por la mitad del precio, y podemos asegurarnos de que todo funcione a la perfección, tal como lo necesitamos.
+
+Melvin pondrá su experiencia y corazón en ensamblar este sistema, así que todo quedará hecho con amor y excelencia, pensando en nuestra familia de la fe.
+
+Este computador será el cerebro que grabará nuestros servicios, prácticas, y hasta la música de la alabanza en vivo. También será el motor que, en el futuro, mostrará las letras de los cantos y versículos en las pantallas de la iglesia. Y, además, nos ayudará a manejar el sonido de la batería y otros equipos, ¡todo en uno!
+Una computadora poderosa y hecha a la medida nos prepara para todo lo que Dios tiene preparado, y nos ahorra mucho dinero.
+¡Qué bendición construir juntos las herramientas que harán crecer nuestra iglesia!
+<hr style="border:none; border-top:1px solid #ff9100; margin:1.2em 0;">
+This is the phase where we really get creative and take a huge step forward into the future of our church! Instead of buying an overpriced, limited computer, we’re going to build one from scratch—hand-picking each part for the best performance and value. That means we get way more power for less than half the price, and everything will work exactly how we need it.
+
+Melvin will be putting his skills and care into building this system, so it’ll be made with love and excellence for our church family.
+
+This computer will be the “brain” that records our services, rehearsals, and even our worship music live. In the future, it’ll power the screens to show song lyrics and Bible verses for everyone to see. It’ll also help us run the drum sound, manage recordings, and keep everything running smoothly—all in one place!
+A powerful, custom-built computer prepares us for everything that’s ahead, and saves us a lot of money.
+What a blessing to build these tools together and watch our church grow!`
+  },
+
+  5: {
+    title_es: "🔊🥁🎥 Fase 5 – Bajo, Subwoofer, Batería Electrónica y Cámaras",
+    title_en: "Phase 5 – Subwoofer, Electronic Drums & Streaming Camera",
+    sub_es: "(Subwoofer, batería electrónica, cables, cámara PTZ—más presencia, mejor ritmo y video profesional)",
+    sub_en: "(Subwoofer, electric drum set, cables, PTZ camera—bigger sound, better rhythm, and pro video)",
+    body: `Hemos llegado a la última fase de nuestro proyecto, confiando en que Dios ha guiado cada decisión para edificar Su iglesia con excelencia y propósito. Aquí, el audio y la tecnología se unen para llevar nuestra alabanza a otro nivel, no solo en volumen sino en la forma en que sentimos y vivimos la adoración juntos como cuerpo de Cristo.
+
+El subwoofer da ese toque de profundidad y fuerza que hace vibrar la música y el mensaje, ayudando a que toda la congregación pueda adorar con gozo y unidad—¡especialmente porque en nuestra cultura la alabanza se siente en todo el ser!
+
+La batería electrónica es una inversión significativa, pero fue escogida con sabiduría y pensando en el futuro. No es la opción más barata, pero tampoco la más cara: se seleccionó porque tiene la calidad para durar y las funciones específicas que nuestro hermano Saul necesita para ministrar. Gracias a su diseño silencioso, no será necesario gastar en una cabina o escudo de batería (que muchas veces no funcionan de todos modos). El sonido va directo a la mezcladora, lo que significa menos ruido, menos gastos en el futuro, y más armonía en la música.
+
+La nueva cámara PTZ y sus accesorios nos ayudan a compartir la Palabra y nuestra adoración con nuestra comunidad, alcanzando a quienes no pueden estar presentes con nosotros.
+
+Cada parte de esta fase fue escogida con oración y cuidado, buscando siempre dar lo mejor a Dios y bendecir a Su pueblo. ¡Sigamos avanzando, agradecidos por Su provisión y creyendo que lo mejor está por venir!
+<hr style="border:none; border-top:1px solid #ff9100; margin:1.2em 0;">
+We’ve reached the final phase of our project, trusting that God has led every decision as we build up His church with excellence and purpose. This is where audio and technology come together to take our worship to the next level—not just louder, but deeper, bringing us together as the body of Christ.
+
+The subwoofer gives our sound that fullness and power, helping the whole congregation worship in unity and joy—because in our culture, worship is something you feel with your whole being!
+
+The electronic drum set is a significant investment, but it was chosen wisely and for the long haul. It’s not the cheapest, but also not the most expensive—it was picked because it’s built to last, and has the exact features our brother Saul needs to serve. With its quiet design, we won’t have to spend money building a drum booth or fighting with a drum shield (which often don’t really work anyway). The sound goes straight to the mixer, meaning less noise, less expense down the road, and more harmony in our music.
+
+The new PTZ camera and accessories help us share the Word and our worship with our community, reaching those who can’t be with us in person.
+
+Every part of this phase has been chosen with prayer and care—always seeking to give God our best and to bless His people. Let’s keep moving forward, grateful for His provision and believing the best is yet to come!`
+  },
+
+  6: {
+    title_es: "🧩 Accesorios – Piezas Clave para Todas las Fases",
+    title_en: "Accessories – Key Pieces for Every Phase",
+    sub_es: "(Cables, adaptadores, soportes y otros esenciales: los detalles que unen todo el sistema)",
+    sub_en: "(Cables, adapters, mounts, and other essentials—the details that hold everything together)",
+    body: `Cada accesorio aquí es como una pieza del rompecabezas. Aunque parezcan pequeños, son fundamentales para que todo el sistema funcione en armonía y sin interrupciones. Estos detalles unen cada fase y hacen posible la excelencia en el sonido y la tecnología de nuestra iglesia—nada queda incompleto.
+
+Son los conectores, adaptadores y extras que aseguran que cada cable esté en su lugar, que todos los equipos puedan trabajar juntos, y que nunca nos falte lo esencial justo cuando más se necesita. Porque cuando cada pieza encaja, la adoración y el mensaje llegan con claridad y alegría a toda la congregación.
+<hr style="border:none; border-top:1px solid #ff9100; margin:1.2em 0;">
+Every accessory here is like a puzzle piece. They may seem small, but they’re essential for making sure everything works together smoothly and without interruption. These are the details that tie every phase together and make excellence possible in our church’s sound and technology—nothing is left incomplete.
+
+These are the connectors, adapters, and extras that ensure every cable fits perfectly, every device works together, and we’re never missing what we need—especially when it matters most. Because when every piece fits, our worship and message reach the whole church with clarity and joy.`
   }
+};
 
-  function createBadge(purchased, qty) {
-    const div = document.createElement("div");
-    if (!qty || isNaN(qty)) qty = 0;
-    if (!purchased || isNaN(purchased)) purchased = 0;
+/* =========================
+   RENDER PHASE INTRO
+   ========================= */
+function renderPhaseIntro(phase) {
+  const info = phaseIntros[phase];
+  if (!info) return "";
+  return `
+    <h2>${info.title_es}<br>
+      <span style="color:#aac; font-size:0.82em;">${info.title_en}</span><br><br>
+    </h2>
+    <div class="en">${info.sub_es}<br><br>${info.sub_en}</div>
+    <div class="phase-intro">${info.body}</div>
+    <div style="text-align:center; margin-bottom:.8em; font-size:0.7em; color:#ffe53b;">
+      Haz clic en cualquier imagen para verla más grande.<br>
+      <span style="color:#aac;">Click any picture to enlarge it.</span>
+    </div>
+  `;
+}
 
-    if (purchased >= qty && qty > 0) {
-      div.className = "badge green";
-      div.textContent = "Completado / Completed";
-    } else if (purchased === 0) {
-      div.className = "badge";
-      div.textContent = `Comprado/Purchased ${purchased}/${qty}`;
+/* =========================
+   IMAGE MODAL
+   ========================= */
+function enlargeImg(img) {
+  const m = document.getElementById("imgModal");
+  document.getElementById("modalImg").src = img.src;
+  m.classList.add("active");
+  m.onclick = () => m.classList.remove("active");
+}
+
+/* =========================
+   PURCHASE BADGE
+   ========================= */
+function createBadge(purchased, qty) {
+  const div = document.createElement("div");
+  if (!qty || isNaN(qty)) qty = 0;
+  if (!purchased || isNaN(purchased)) purchased = 0;
+
+  if (purchased >= qty && qty > 0) {
+    div.className = "badge green";
+    div.textContent = "Completado / Completed";
+  } else if (purchased === 0) {
+    div.className = "badge";
+    div.textContent = `Comprado/Purchased ${purchased}/${qty}`;
+  } else {
+    div.className = "badge yellow";
+    div.textContent = `Comprado/Purchased ${purchased}/${qty}`;
+  }
+  return div;
+}
+
+/* =========================
+   ITEM CARD
+   ========================= */
+function cardFor(item) {
+  const card = document.createElement("div");
+  card.className = "item";
+
+  const qty = parseInt(item.quantity) || 0;
+  const purchased = parseInt(item.purchased) || 0;
+
+  const badge = createBadge(purchased, qty);
+  const img = document.createElement("img");
+  img.src = item.image_url || "";
+  img.alt = item.title_en || item.title_es || "";
+  img.onclick = () => enlargeImg(img);
+
+  const title = document.createElement("div");
+  title.className = "item-title";
+  title.innerHTML = `${item.title_es || ""}<br><span class='en'>${item.title_en || ""}</span>`;
+
+  const price = document.createElement("div");
+  price.className = "price";
+  price.textContent = item.price
+  ? `$${parseFloat(item.price).toFixed(2)}`
+  : "";
+
+  const qtyDiv = document.createElement("div");
+  qtyDiv.className = "qty";
+  qtyDiv.textContent = qty ? "Cantidad / Quantity: " + qty : "";
+  const desc = document.createElement("div");
+  desc.className = "desc";
+  desc.innerHTML = `${item.desc_es || ""}<br>${item.desc_en || ""}`;
+
+  card.append(badge, img, title, price, qtyDiv, desc);
+  return card;
+}
+
+/* =========================
+   MESSAGE BOX
+   ========================= */
+async function loadMessage() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    const box = document.getElementById("messageCard");
+    if (data.message && data.message.trim() !== "") {
+      box.textContent = data.message;
+      box.classList.add("active");
     } else {
-      div.className = "badge yellow";
-      div.textContent = `Comprado/Purchased ${purchased}/${qty}`;
+      box.classList.remove("active");
     }
-    return div;
+  } catch (err) {
+    console.warn("No message box data found.", err);
   }
+}
 
-  function cardFor(item) {
-    const card = document.createElement("div");
-    card.className = "item";
+/* =========================
+   LOAD PHASES
+   ========================= */
+async function loadPhases() {
+  const phasesContainer = document.getElementById("phases");
 
-    const qty = parseInt(item.quantity) || 0;
-    const purchased = parseInt(item.purchased) || 0;
+  for (let i = 1; i <= 6; i++) {
+    const res = await fetch(`${API_URL}?phase=${i}`);
+    const data = await res.json();
+    const validItems = (data.items || []).filter(it =>
+      it && it.image_url && it.image_url.startsWith("http") &&
+      !String(it.title_es).includes("Title")
+    );
 
-    const badge = createBadge(purchased, qty);
-    const img = document.createElement("img");
-    img.src = item.image_url || "";
-    img.alt = item.title_en || item.title_es || "";
-    img.onclick = () => enlargeImg(img);
+    if (!validItems.length) continue;
 
-    const title = document.createElement("div");
-    title.className = "item-title";
-    title.innerHTML = `${item.title_es || ""}<br><span class='en'>${item.title_en || ""}</span>`;
-
-    const price = document.createElement("div");
-    price.className = "price";
-    price.textContent = item.price ? `$${item.price}` : "";
-
-    const qtyDiv = document.createElement("div");
-    qtyDiv.className = "qty";
-    qtyDiv.textContent = qty ? `Cantidad: ${qty}` : "";
-
-    const desc = document.createElement("div");
-    desc.className = "desc";
-    desc.innerHTML = `${item.desc_es || ""}<br>${item.desc_en || ""}`;
-
-    card.append(badge, img, title, price, qtyDiv, desc);
-    return card;
-  }
-
-  async function loadMessage() {
-    try {
-      const res = await fetch(API_URL);
-      const data = await res.json();
-      const box = document.getElementById("messageCard");
-      if (data.message && data.message.trim() !== "") {
-        box.textContent = data.message;
-        box.classList.add("active");
-      } else {
-        box.classList.remove("active");
-      }
-    } catch (err) {
-      console.warn("No message box data found.", err);
-    }
-  }
-
-  async function loadPhases() {
-    const phasesContainer = document.getElementById("phases");
-    for (let i = 1; i <= 6; i++) {
-      const res = await fetch(`${API_URL}?phase=${i}`);
-      const data = await res.json();
-      const validItems = (data.items || []).filter(it =>
-        it && it.image_url && it.image_url.startsWith("http") &&
-        !String(it.title_es).includes("Title")
-      );
-
-      if (!validItems.length) continue;
-
-      const section = document.createElement("section");
-      section.innerHTML = `
-        <h2>Fase ${i}<br><span class='en'>Phase ${i}</span></h2>
-        <div style="text-align:center; margin-bottom:.8em; font-size:0.7em; color:#ffe53b;">
-          Haz clic en cualquier imagen para verla más grande.<br>
-          <span style="color:#aac;">Click any picture to enlarge it.</span>
+    const section = document.createElement("section");
+    section.innerHTML = renderPhaseIntro(i) + `
+      <div id="phase-items-${i}" class="phase-items"></div>
+      <div class="registry-actions">
+        <div class="qr">
+          <img alt="QR – Registry" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https%3A%2F%2Fwww.amazon.com%2Fregistries%2Fgl%2Fguest-view%2F1E6GZIQ5MG9GC">
+          <div class="cap">Escanea para ver el registro<br><small>Scan to view the registry</small></div>
         </div>
-        <div id="phase-items-${i}" class="phase-items"></div>
-        <div class="registry-actions">
-          <div class="qr">
-            <img alt="QR – Registry" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https%3A%2F%2Fwww.amazon.com%2Fregistries%2Fgl%2Fguest-view%2F1E6GZIQ5MG9GC">
-            <div class="cap">Escanea para ver el registro<br><small>Scan to view the registry</small></div>
-          </div>
-          <div class="flash-reminder">
-            <span>¡No olvides buscar cupones de descuento antes de comprar!</span><br>
-            <span style="font-size:0.98em">Don’t forget to check for coupons before you order!</span>
-          </div>
-          <a class="button" href="https://www.amazon.com/registries/gl/guest-view/1E6GZIQ5MG9GC" target="_blank">🛒 Ordenar aquí / Order Here</a>
+        <div class="flash-reminder">
+          <span>¡No olvides buscar cupones de descuento antes de comprar!</span><br>
+          <span style="font-size:0.98em">Don’t forget to check for coupons before you order!</span>
         </div>
-      `;
+        <a class="button" href="https://www.amazon.com/registries/gl/guest-view/1E6GZIQ5MG9GC" target="_blank">🛒 Ordenar aquí / Order Here</a>
+      </div>
+    `;
 
-      phasesContainer.append(section);
-      const container = section.querySelector(`#phase-items-${i}`);
-      validItems.forEach(it => container.append(cardFor(it)));
-    }
+    phasesContainer.append(section);
+
+    const container = section.querySelector(`#phase-items-${i}`);
+    validItems.forEach(it => container.append(cardFor(it)));
   }
+}
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    await loadMessage();
-    await loadPhases();
-  });
-  </script>
+/* =========================
+   INIT
+   ========================= */
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadMessage();
+  await loadPhases();
+});
+</script>
 </body>
 </html>
