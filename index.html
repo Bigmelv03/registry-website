@@ -12,10 +12,14 @@
   --ink2: #aac;
   --ink3: #d6eaff;
   --cyan: #6ef;
+  --link: #7cf;
   --price: #7fa;
   --accent: #ff9100;
-  --shadow: 0 1px 5px #0003;
+  --note: #fc5;
+  --shadow: 0 1px 8px #0004;
 }
+
+/* General layout */
 body {
   background: var(--bg);
   color: var(--ink);
@@ -27,48 +31,75 @@ h1 { margin: 0 0 .6em 0; }
 h2 { color: var(--cyan); margin-top: 1.7em; margin-bottom: 0.1em; }
 .en { color: var(--ink2); font-size: 0.93em; margin: 0 0 0.7em 0; }
 
+/* Message Card */
+.message-card {
+  display: none;
+  background: var(--card);
+  border-left: 6px solid var(--accent);
+  box-shadow: var(--shadow);
+  color: var(--ink3);
+  padding: 1em 1.2em;
+  border-radius: 10px;
+  margin: 1.6em 0 2.2em 0;
+  white-space: pre-line;
+  text-align: center;
+  font-size: 1.05em;
+}
+.message-card.active { display: block; }
+
+/* Cards Grid */
 .phase-items {
   display: flex;
   flex-wrap: wrap;
   gap: 1.2em;
   margin: 2.2em 0;
   justify-content: center;
+  align-items: stretch;
 }
 .item {
-  width: 220px;
+  width: 215px;
   background: var(--card);
   border-radius: 12px;
-  padding: 0.7em 0.5em 0.9em;
+  padding: 0.65em 0.5em 0.9em 0.5em;
   text-align: center;
   box-shadow: var(--shadow);
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  position: relative;
 }
 .item img {
   max-width: 100%;
-  max-height: 100px;
+  max-height: 115px;
+  margin-bottom: 0.6em;
   border-radius: 6px;
   background: #111;
-  margin-top: 0.6em;
   cursor: pointer;
   transition: transform 0.25s ease;
-  object-fit: cover;
 }
 .item img:hover { transform: scale(1.03); }
 .item-title {
-  font-size: 1.05em;
+  font-size: 1.07em;
   font-weight: 700;
-  margin: 0.5em 0 0.2em;
+  margin-bottom: 0.2em;
+  min-height: 2.6em;
 }
-.price { color: var(--price); font-weight: 700; }
-.qty { font-size: 0.95em; color: #fff9; margin-bottom: 0.3em; }
+.price {
+  font-size: 1.07em;
+  color: var(--price);
+  font-weight: 700;
+  margin-bottom: 0.15em;
+}
+.qty { font-size: .96em; color: #fff9; margin-bottom: 0.3em; }
 .desc {
-  font-size: 0.95em;
+  font-size: 0.97em;
   color: var(--ink3);
-  margin-bottom: 0.3em;
+  margin-bottom: 0.33em;
   white-space: pre-line;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
 }
 
 /* Badges */
@@ -96,6 +127,104 @@ h2 { color: var(--cyan); margin-top: 1.7em; margin-bottom: 0.1em; }
   100% { opacity: 0.6; box-shadow: 0 0 6px #00ff80, 0 0 14px #00ff80; }
 }
 
+/* QR & Registry Section */
+.registry-actions {
+  width: 100%;
+  clear: both;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8em;
+  margin: 2.2em 0;
+}
+.qr {
+  text-align: center;
+  margin: 0.9em 0;
+}
+.qr img {
+  width: 128px;
+  height: 128px;
+  border-radius: 10px;
+  border: 4px solid var(--accent);
+  background: #fff;
+  box-shadow: 0 1px 12px #0003;
+}
+.qr .cap {
+  color: var(--accent);
+  font-weight: 800;
+  margin-top: .55em;
+}
+.qr .cap small {
+  color: #aaa;
+  font-weight: 600;
+  display: block;
+  margin-top: .15em;
+}
+.flash-reminder {
+  font-weight: bold;
+  color: #ffe53b;
+  text-align: center;
+  margin: 0.9em 0;
+  animation: flash 0.6s linear infinite alternate;
+  font-size: 1.08em;
+  letter-spacing: .01em;
+  text-shadow: 0 0 7px #fff6, 0 2px 0 #a43, 0 1px 8px #a43c;
+  min-height: 3.5em;
+  line-height: 1.2;
+}
+@keyframes flash {
+  0% { opacity: 1; }
+  65% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+.button {
+  margin: 1.2em 0;
+  display: block;
+  width: 99%;
+  max-width: 420px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  font-size: 1.12em;
+  border-radius: 10px;
+  padding: 0.9em 0.1em;
+  text-align: center;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 3px 14px #0006;
+}
+
+/* Info Cards */
+.note {
+  font-size: 1.01em;
+  color: var(--note);
+  margin: 1.2em 0 1.1em 0;
+  text-align: center;
+  background: #2a2822;
+  border-radius: 10px;
+  padding: 1em;
+}
+.top-card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 1.1em 1.2em 1.3em 1.2em;
+  box-shadow: var(--shadow);
+}
+.glory-flash {
+  color: #ffe53b;
+  font-weight: 900;
+  animation: flash-excite 0.32s linear infinite alternate;
+  text-align: center;
+  font-size: 1.14em;
+}
+@keyframes flash-excite {
+  0% { opacity: 1; }
+  100% { opacity: 0.32; }
+}
+.phase-intro { margin-bottom:1.0em; white-space:pre-line; }
+.small { font-size:.92em; color:#ddd; }
+
 /* Modal */
 .modal-img-bg {
   display: none;
@@ -108,184 +237,233 @@ h2 { color: var(--cyan); margin-top: 1.7em; margin-bottom: 0.1em; }
 .modal-img-bg img {
   max-width: 94vw; max-height: 88vh;
   border-radius: 13px;
-  box-shadow: 0 2px 15px #000a;
+  box-shadow: 0 2px 22px #000a;
 }
 .modal-img-bg:after {
   content: "✕";
-  position: absolute;
-  top: 1em; right: 1.3em;
-  color: #fff;
-  font-size: 2.2em;
-  font-weight: bold;
-  cursor: pointer;
+  position: absolute; top: 2.3em; right: 2.7em;
+  color: #fff; font-size: 2.3em; font-weight: bold; cursor: pointer; z-index: 2000;
+}
+
+/* Responsive */
+@media (max-width: 860px) {
+  .phase-items { justify-content: center; }
+  .item { width: 92vw; max-width: 350px; margin-left: auto; margin-right: auto; }
+}
+@media (max-width: 650px) {
+  .modal-img-bg:after { top: 0.6em; right: 0.9em; font-size: 2em; }
 }
 @media (max-width: 520px) {
+  .phase-items { gap: 1em; }
   .item { width: 98vw; max-width: 99vw; }
+  .registry-actions { gap: 1em; margin: 1.2em 0 1.2em 0; }
 }
 </style>
 </head>
 <body>
 
-<h1>Iglesia Buenas Nuevas - Registro de sistemas de sonido</h1>
-<h2><span class="en" style="color:#aac;font-size:1.3em;">Good News Church - Sound System Registry</span></h2>
+  <h1>Iglesia Buenas Nuevas - Registro de sistemas de sonido</h1>
+  <h2><span class="en" style="color:#aac;font-size:1.3em;">Good News Church - Sound System Registry</span></h2>
 
-<!-- =========================
+  <div id="messageCard" class="message-card"></div>
+
+  <!-- =========================
      TESTIMONIO DE BENDICIÓN / BLESSING TESTIMONY
      ========================= -->
 <div class="top-card" style="margin:2.2em 0 2.2em 0; border-top:4px solid #ff9100;">
-  <div class="glory-flash" style="margin-top:1.0em;">¡Toda la gloria a Él!</div>
-  <p>Dios ya ha comenzado a bendecir este proyecto...</p>
-  <div class="glory-flash" style="margin-top:1.0em;">To God be the glory!</div>
-  <p>God is already starting to bless us in this project...</p>
+      <div class="glory-flash" style="margin-top:1.0em;">¡Toda la gloria a Él!</div>
+  <br><br>
+  Dios ya ha comenzado a bendecir este proyect
+  El 23 de octubre de 2025, ¡pudimos comprar la batería electrónica con un descuento especial de $144 durante una oferta relámpago de solo dos horas!<br>
+  Es una confirmación de que el Señor está abriendo puertas y proveyendo exactamente lo que necesitamos, en el momento perfecto.<br>
+  Seguimos adelante con fe, confiando en que cada fase será respaldada por Su provisión y gracia.<br><br>
+      <div class="glory-flash" style="margin-top:1.0em;">To God be the glory!</div><br><br>
+      
+    God is already starting to bless us in this project, and we want to share it with everyone.<br>
+    On 10-23-2025, we were able to purchase the electronic drum set at a special $144 discount during a two-hour lightning deal!<br>
+    It’s proof that the Lord is opening doors and providing exactly what we need at just the right time.<br>
+    We continue moving forward in faith, trusting that every phase will be covered by His provision and grace.
+
 </div>
 
-<!-- INTRO STORY -->
+  <!-- INTRO STORY -->
 <div class="top-card" style="margin:2.2em 0 2.2em 0; border-top:4px solid #ff9100;">
-  <h2 style="color:#ff9100; margin-top:1em;">
+      <h2 style="color:#ff9100; margin-top:1em;">
   El Corazón Detrás del Proyecto / The Heart Behind the Project
-  </h2>
-  <p>¡Hola familia! Gracias por apoyar el ministerio de sonido...</p>
-  <hr style="border:none; border-top:1px solid #ff9100; margin:1.2em 0;">
-  <p>Hello family! Thank you for supporting our sound ministry...</p>
+</h2><br><br>
+
+  <b>¡Hola familia! Gracias por apoyar el ministerio de sonido. 🙌🏽</b>
+  <br><br>
+  Nuestra congregación Buenas Nuevas ya comenzó y nos reunimos cada semana. Por ahora, nos “defendemos” con bocinas personales y micrófonos básicos, lo que hace que las voces se pierdan entre la música y todo quede un poco fuera de balance; a veces ni siquiera se entiende bien a la Pastora. Nos alcanza por ahora, pero seamos honestos: no podemos quedarnos así. Dios no solo nos llama a conformarnos—Él nos llama a *cultivar* y mejorar lo que nos ha dado, como Adán en el jardín. Dios nos da el espacio, pero es nuestro trabajo cultivarlo y convertirlo en iglesia, justamente lo que hemos estado orando. Cada paso que damos es nuestra manera de honrar al Señor y usar bien el dinero y los recursos que Él nos ha confiado (“el señor les dio a sus siervos talentos, cada uno según su capacidad”; somos llamados a multiplicar lo que Él nos da – Mat. 25:14-30).<br><br>
+  <b>Como familia en Cristo, avanzamos en unidad, poniendo el corazón en todo lo que hacemos (Col. 3:23). Cada regalo—grande o pequeño—es una inversión directa en el futuro de Buenas Nuevas y en el Reino de Dios. ¡Gracias por sembrar en este ministerio y por creer que juntos, como familia, podemos hacer crecer lo que Dios nos ha dado! 💙</b>
+  <hr style="border: none; border-top: 1px solid #ff9100; margin:1.2em 0;">
+  <b>Hello family! Thank you for supporting our sound ministry. 🙌🏽</b>
+  <br><br>
+  Our Buenas Nuevas congregation has already begun and meets weekly. For now, we’re getting by with our personal practice speakers and basic microphones, which means voices get lost in the music, and our sound is off balance; sometimes it’s even hard to understand Pastora clearly. It gets us by for now, but let’s be honest—we can’t stay like this. God doesn’t just call us to make do; He calls us to *cultivate* and improve what He’s given us, just like Adam in the garden. God provides the space, but it’s our job to cultivate it into a church—the very thing we’ve been praying for. Every step we take is our way of honoring Him and using well the money and resources He’s entrusted to us (“the master gave each servant talents, each according to their ability”; we are to multiply with what He has given us – Mat. 25:14-30).<br><br>
+  <b>As one family in Christ, we move in unity, putting our hearts into everything we do (Col. 3:23). Every gift—large or small—is a direct investment in the future of Buenas Nuevas and God’s Kingdom. Thank you for sowing into this ministry and believing that together, as a family, we can grow what God has given us! 💙</b>
 </div>
 
-<!-- INSTRUCTIONS -->
-<div class="note" style="margin:2.2em 0; border-top:4px solid #ff9100;">
-  <h2 style="color:#ff9100; margin-top:1em;">
-  ¿Cómo Funciona la Lista por Fases? / How the Phase List Works
-  </h2>
-  <p>Hemos dividido la lista en fases...</p>
-</div>
+  <!-- INSTRUCTIONS -->
 
-<!-- ORDERING NOTE + TOP QR -->
-<div class="note" style="margin-top:2.2em; border-top:4px solid #ff9100;">
-  <h2 style="color:#ff9100; margin-top:1em;">¿Cómo Hacer Tu Pedido? / How to Order</h2>
-  <p>Por favor, ordene solamente desde nuestro registro oficial...</p>
-</div>
+<div class="note" style="margin-top:2.2em 0 2.2em 0; border-top: 4px solid #ff9100;">
+<h2 style="color:#ff9100; margin-top:1em;">
+¿Cómo Funciona la Lista por Fases? / How the Phase List Works
+</h2><br><br>
 
-<div class="registry-actions">
-  <div class="qr">
-    <img alt="QR – Registry" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https%3A%2F%2Fwww.amazon.com%2Fregistries%2Fgl%2Fguest-view%2F1E6GZIQ5MG9GC">
-    <div class="cap">Escanea para ver el registro<br><small>Scan to view the registry</small></div>
+  Hemos dividido la lista en fases para ayudar a organizar y priorizar las necesidades del ministerio. <b>Fase 1</b> es la prioridad, y los artículos en cada fase están ordenados de mayor a menor importancia. Cuando se completa una fase, avanzamos a la siguiente.<br>
+  <br>
+  Cada fase tiene un <b>código QR</b> que te lleva a la misma lista de regalos. Usa el QR para compartir fácilmente esta página con amigos, familiares o quienes deseen apoyar. <b>Nota:</b> La página no marca automáticamente los artículos donados; si un artículo ya no aparece en la lista, es probable que ya fue comprado. Comprar por fase es solo una recomendación—¡puedes escoger cualquier artículo que desees! Si tienes preguntas sobre lo que aún falta, comunícate con nosotros.<br><br>
+    <hr style="border: none; border-top: 1px solid #ff9100; margin:1.2em 0;"><br>
+  <span style="color:#aaa; font-size:0.95em;">
+    We’ve divided the list into phases to help organize and prioritize the ministry’s needs. <b>Phase 1</b> is the highest priority, and each phase’s items are listed from most to least important. Once a phase is complete, we move on to the next.<br><br>
+    Each phase has a <b>QR code</b> that links to the same registry list. Use the QR to easily share this page with friends, family, or anyone who wants to help. <b>Note:</b> The registry page doesn’t automatically show received items; if you don’t see something listed, it’s probably already been purchased. Buying by phase is just a suggestion—feel free to purchase any item you’d like! If you’re unsure what’s still needed, just reach out to us.
+  </span>
+</div>
+<br>
+  <!-- ORDERING NOTE + TOP QR -->
+  
+  <div class="note" style="margin-top:2.2em; border-top: 4px solid #ff9100;">
+      <h2 style="color:#ff9100; margin-top:1em;">
+  ¿Cómo Hacer Tu Pedido? / How to Order
+</h2><br><br>
+    <b>Por favor, ordene solamente desde nuestro registro oficial usando los botones naranjas o el código QR.
+    Si no ve un artículo en el registro, probablemente ya fue comprado.</b><br>
+ <hr style="border: none; border-top: 1px solid #ff9100; margin:1.2em 0;">
+    <span class="en" style="display:block;margin-top:.6em;color:#fff">Please order only from our official registry using the orange buttons or the QR code.
+    If an item isn’t visible in the registry, it has likely already been purchased.</span>
   </div>
-  <div class="flash-reminder">
-    <span>¡No olvides buscar cupones de descuento antes de comprar!</span><br>
-    <span style="font-size:0.98em">Don’t forget to check for coupons before you order!</span>
   </div>
-  <a class="button" href="https://www.amazon.com/registries/gl/guest-view/1E6GZIQ5MG9GC" target="_blank">🛒 Ordenar aquí / Order Here</a>
-</div>
 
-<!-- =========================
-     FASES (1–6)
-     ========================= -->
-<h2>🧱 Fase 1 – Sistema de Sonido Base<br><span class="en" style="color:#aac; font-size:0.82em;">Phase 1 – Core Sound System Infrastructure</span></h2>
-<div id="phase-items-1" class="phase-items"></div>
+  <!-- =========================
+       Dynamic Phases (1–6)
+       ========================= -->
+  <div id="phases"></div>
 
-<h2>🎤 Fase 2 – Micrófonos, Monitores y Accesorios<br><span style="color:#aac; font-size:0.82em;">Phase 2 – Microphones, Monitors, and Accessories</span></h2>
-<div id="phase-items-2" class="phase-items"></div>
+  <!-- Modal for enlarged images -->
+  <div id="imgModal" class="modal-img-bg">
+    <img id="modalImg" src="">
+  </div>
 
-<h2>📡 Fase 3 – Mástil de Antenas y Cables<br><span style="color:#aac; font-size:0.82em;">Phase 3 – Antenna Mast & Cabling</span></h2>
-<div id="phase-items-3" class="phase-items"></div>
+  <script>
+  const API_URL = "https://script.google.com/macros/s/AKfycbxTvUMgfiDCpxxtgXBpSaR0JxOAWcqUzXL_mvo6Q-k6Oae9GD5zUC3C9-RAZdKgYpV_yw/exec";
 
-<h2>🎚️ Fase 4 – Mezcladora Avanzada<br><span style="color:#aac; font-size:0.82em;">Phase 4 – Advanced Mixer Setup</span></h2>
-<div id="phase-items-4" class="phase-items"></div>
-
-<h2>🎧 Fase 5 – Monitoreo Personal<br><span style="color:#aac; font-size:0.82em;">Phase 5 – Personal Monitoring System</span></h2>
-<div id="phase-items-5" class="phase-items"></div>
-
-<h2>💡 Fase 6 – Extras y Optimización<br><span style="color:#aac; font-size:0.82em;">Phase 6 – Extras & Optimization</span></h2>
-<div id="phase-items-6" class="phase-items"></div>
-
-<!-- API SCRIPT -->
-<script>
-const API_URL = "https://script.google.com/macros/s/AKfycbxTvUMgfiDCpxxtgXBpSaR0JxOAWcqUzXL_mvo6Q-k6Oae9GD5zUC3C9-RAZdKgYpV_yw/exec";
-
-function enlargeImg(img) {
-  const m = document.getElementById("imgModal");
-  document.getElementById("modalImg").src = img.src;
-  m.classList.add("active");
-  m.onclick = () => m.classList.remove("active");
-}
-
-function createBadge(purchased, qty) {
-  const div = document.createElement("div");
-  if (!qty || isNaN(qty)) qty = 0;
-  if (!purchased || isNaN(purchased)) purchased = 0;
-
-  if (purchased >= qty && qty > 0) {
-    div.className = "badge green";
-    div.textContent = "Completado / Completed";
-  } else if (purchased === 0) {
-    div.className = "badge";
-    div.textContent = `Comprado/Purchased ${purchased}/${qty}`;
-  } else {
-    div.className = "badge yellow";
-    div.textContent = `Comprado/Purchased ${purchased}/${qty}`;
+  function enlargeImg(img) {
+    const m = document.getElementById("imgModal");
+    document.getElementById("modalImg").src = img.src;
+    m.classList.add("active");
+    m.onclick = () => m.classList.remove("active");
   }
-  return div;
-}
 
-function cardFor(item) {
-  const card = document.createElement("div");
-  card.className = "item";
+  function createBadge(purchased, qty) {
+    const div = document.createElement("div");
+    if (!qty || isNaN(qty)) qty = 0;
+    if (!purchased || isNaN(purchased)) purchased = 0;
 
-  const qty = parseInt(item.quantity) || 0;
-  const purchased = parseInt(item.purchased) || 0;
+    if (purchased >= qty && qty > 0) {
+      div.className = "badge green";
+      div.textContent = "Completado / Completed";
+    } else if (purchased === 0) {
+      div.className = "badge";
+      div.textContent = `Comprado/Purchased ${purchased}/${qty}`;
+    } else {
+      div.className = "badge yellow";
+      div.textContent = `Comprado/Purchased ${purchased}/${qty}`;
+    }
+    return div;
+  }
 
-  const badge = createBadge(purchased, qty);
-  const img = document.createElement("img");
-  img.src = item.image_url || "";
-  img.alt = item.title_en || item.title_es || "";
-  img.onclick = () => enlargeImg(img);
+  function cardFor(item) {
+    const card = document.createElement("div");
+    card.className = "item";
 
-  const title = document.createElement("div");
-  title.className = "item-title";
-  title.innerHTML = `${item.title_es || ""}<br><span class='en'>${item.title_en || ""}</span>`;
+    const qty = parseInt(item.quantity) || 0;
+    const purchased = parseInt(item.purchased) || 0;
 
-  const price = document.createElement("div");
-  price.className = "price";
-  price.textContent = item.price ? `$${item.price}` : "";
+    const badge = createBadge(purchased, qty);
+    const img = document.createElement("img");
+    img.src = item.image_url || "";
+    img.alt = item.title_en || item.title_es || "";
+    img.onclick = () => enlargeImg(img);
 
-  const qtyDiv = document.createElement("div");
-  qtyDiv.className = "qty";
-  qtyDiv.textContent = qty ? `Cantidad: ${qty}` : "";
+    const title = document.createElement("div");
+    title.className = "item-title";
+    title.innerHTML = `${item.title_es || ""}<br><span class='en'>${item.title_en || ""}</span>`;
 
-  const desc = document.createElement("div");
-  desc.className = "desc";
-  desc.innerHTML = `${item.desc_es || ""}<br>${item.desc_en || ""}`;
+    const price = document.createElement("div");
+    price.className = "price";
+    price.textContent = item.price ? `$${item.price}` : "";
 
-  card.append(badge, img, title, price, qtyDiv, desc);
-  return card;
-}
+    const qtyDiv = document.createElement("div");
+    qtyDiv.className = "qty";
+    qtyDiv.textContent = qty ? `Cantidad: ${qty}` : "";
 
-async function loadPhaseItems(phase) {
-  try {
-    const res = await fetch(`${API_URL}?phase=${phase}`);
-    const data = await res.json();
-    const container = document.getElementById(`phase-items-${phase}`);
-    container.innerHTML = "";
+    const desc = document.createElement("div");
+    desc.className = "desc";
+    desc.innerHTML = `${item.desc_es || ""}<br>${item.desc_en || ""}`;
 
-    // Filter out header rows or incomplete entries
-    const validItems = (data.items || []).filter(it => {
-      return (
-        it &&
-        !String(it.title_es).includes("Title") &&
-        !String(it.price).includes("Price") &&
-        it.image_url &&
-        it.image_url.startsWith("http")
+    card.append(badge, img, title, price, qtyDiv, desc);
+    return card;
+  }
+
+  async function loadMessage() {
+    try {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      const box = document.getElementById("messageCard");
+      if (data.message && data.message.trim() !== "") {
+        box.textContent = data.message;
+        box.classList.add("active");
+      } else {
+        box.classList.remove("active");
+      }
+    } catch (err) {
+      console.warn("No message box data found.", err);
+    }
+  }
+
+  async function loadPhases() {
+    const phasesContainer = document.getElementById("phases");
+    for (let i = 1; i <= 6; i++) {
+      const res = await fetch(`${API_URL}?phase=${i}`);
+      const data = await res.json();
+      const validItems = (data.items || []).filter(it =>
+        it && it.image_url && it.image_url.startsWith("http") &&
+        !String(it.title_es).includes("Title")
       );
-    });
 
-    validItems.forEach(it => container.append(cardFor(it)));
-  } catch (e) {
-    console.error("Error loading phase", phase, e);
+      if (!validItems.length) continue;
+
+      const section = document.createElement("section");
+      section.innerHTML = `
+        <h2>Fase ${i}<br><span class='en'>Phase ${i}</span></h2>
+        <div style="text-align:center; margin-bottom:.8em; font-size:0.7em; color:#ffe53b;">
+          Haz clic en cualquier imagen para verla más grande.<br>
+          <span style="color:#aac;">Click any picture to enlarge it.</span>
+        </div>
+        <div id="phase-items-${i}" class="phase-items"></div>
+        <div class="registry-actions">
+          <div class="qr">
+            <img alt="QR – Registry" src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https%3A%2F%2Fwww.amazon.com%2Fregistries%2Fgl%2Fguest-view%2F1E6GZIQ5MG9GC">
+            <div class="cap">Escanea para ver el registro<br><small>Scan to view the registry</small></div>
+          </div>
+          <div class="flash-reminder">
+            <span>¡No olvides buscar cupones de descuento antes de comprar!</span><br>
+            <span style="font-size:0.98em">Don’t forget to check for coupons before you order!</span>
+          </div>
+          <a class="button" href="https://www.amazon.com/registries/gl/guest-view/1E6GZIQ5MG9GC" target="_blank">🛒 Ordenar aquí / Order Here</a>
+        </div>
+      `;
+
+      phasesContainer.append(section);
+      const container = section.querySelector(`#phase-items-${i}`);
+      validItems.forEach(it => container.append(cardFor(it)));
+    }
   }
-}
 
-document.addEventListener("DOMContentLoaded", () => {
-  for (let i = 1; i <= 6; i++) loadPhaseItems(i);
-});
-</script>
-
+  document.addEventListener("DOMContentLoaded", async () => {
+    await loadMessage();
+    await loadPhases();
+  });
+  </script>
 </body>
 </html>
