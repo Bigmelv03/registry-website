@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Iglesia Buenas Nuevas – Lista de Regalos por Fases</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- [ALL YOUR STYLES, UNCHANGED] -->
+  <style>
+    /* ...[SNIP]... (keep all your CSS as above) ...[SNIP]... */
+    /* Use all your style code exactly as you have it! */
+  </style>
+</head>
+<body>
+
+  <!-- ===== Your static content goes here ===== -->
+  <h1>Iglesia Buenas Nuevas - Registro de sistemas de sonido</h1>
+  <h2>
+    <span style="color:#aac;font-size:1.3em;">Good News Church - Sound System Registry</span>
+  </h2>
+
+  <!-- All the "testimony", "heart behind", instructions, notes, QR, etc stays here -->
+
+  <!-- 
+    REMOVE ALL <div class="phase-items"></div> from your HTML.
+    The script below will generate all phases and item cards automatically!
+  -->
+
+  <!-- 
+    Just put ONE empty container where you want the full list to go:
+  -->
+  <div id="dynamic-phases"></div>
+
+  <!-- Only ONE modal image block! -->
+  <div class="modal-img-bg" id="imgModal" onclick="this.classList.remove('active')">
+    <img id="modalImg" src="">
+  </div>
+
+  <!-- =================== SCRIPT STARTS HERE =================== -->
+  <script>
+/* ========= CONFIG ========= */
+const API_URL = "https://script.google.com/macros/s/AKfycbxTvUMgfiDCpxxtgXBpSaR0JxOAWcqUzXL_mvo6Q-k6Oae9GD5zUC3C9-RAZdKgYpV_yw/exec";
+
+/* Helper: currency */
+const money = v => {
+  if (v === null || v === undefined || v === "") return "";
+  const n = typeof v === "number" ? v : parseFloat(String(v).replace(/[^0-9.\-]/g,""));
+  if (isNaN(n)) return String(v);
+  return n.toLocaleString("en-US", { style:"currency", currency:"USD" });
+};
+
+/* Helper: make one item card */
+function makeItemCard(it){
+  const img = it.image || it.image_url || it.img || "";
+  const titleES = it.title_es || it.titleEs || it["Title (ES)"] || "";
+  const titleEN = it.title_en || it.titleEn || it["Title (EN)"] || "";
+  const descES  = it.desc_es  || it.description_es || it["Description (ES)"] || "";
+  const descEN  = it.desc_en  || it.description_en || it["Description (EN)"] || "";
+  const price   = it.price || it.Price || "";
+  const qty     = Number(it.quantity ?? it.Quantity ?? 0);
+  const purchased = Number(it.purchased ?? it.Purchased ?? 0);
+
+  // Status ribbon logic
+  let statusHTML = "";
+  if (qty > 0) {
+    if (purchased <= 0) {
+      statusHTML = `<div class="status-badge status-red">Comprado 0 de ${qty} · Purchased 0 of ${qty}</div>`;
+    } else if (purchased < qty) {
+      statusHTML = `<div class="status-badge status-amber">Comprado ${purchased} de ${qty} · Purchased ${purchased} of ${qty}</div>`;
+    } else {
+      statusHTML = `<div class="status-badge status-green status-pulse">COMPLETADO · COMPLETE</div>`;
+    }
+  }
+
+  // Card
+  const el = document.createElement("div");
+  el.className = "item";
+  el.innerHTML = `
+    ${statusHTML}
+    <img src="${img}" alt="" loading="lazy">
+    <div class="item-title">
+      ${titleES}<br>
+      <span style="font-size:.95em; color:#aac;">(${titleEN})</span>
+    </div>
+    <div class="price">${money(price)}</div>
+    <div class="qty">Cantidad / Quantity: ${qty || 0}</div>
+    <div class="desc">
+      ${descES}<br><br>
+      ${descEN}
+    </div>
+  `;
+  // click to enlarge
+  el.querySelector("img").addEventListener("click", (e) => enlargeImg(e.currentTarget));
+  return el;
+}
+
+/* Render all items into the six containers */
+function renderItems(items){
+  // Group by phase (supports keys 'phase' or 'Phase')
+  const groups = {};
+  (items || []).forEach(it => {
+    const p = Number(it.phase ?? it.Phase ?? it["phase"] ?? it["Phase"] ?? 0) || 0;
+    (groups[p] ||= []).push(it);
+  });
+
+  // For phases 1..6, find container [data-phase="N"] and inject cards
+  for (let p = 1; p <= 6; p++){
+    const holder = document.querySelector(`.phase-items[data-phase="${p}"]`);
+    if (!holder) continue;
+    holder.innerHTML = ""; // clear
+    const arr = groups[p] || [];
+    arr.forEach(it => holder.appendChild(makeItemCard(it)));
+  }
+}
+
+/* Message box (G6:K20) -> raw HTML or text preserved */
+function renderMessage(messageHtml){
+  if (!messageHtml) {
+    const existing = document.getElementById("dynamic-message-box");
+    if (existing) existing.remove();
+    return;
+  }
+  let box = document.getElementById("dynamic-message-box");
+  if (!box){
+    box = document.createElement("div");
+    box.id = "dynamic-message-box";
+    box.className = "top-card";
+    box.style.margin = "2.2em 0";
+    box.style.borderTop = "4px solid var(--accent)";
+    const h = document.createElement("h2");
+    h.textContent = "Mensaje / Message";
+    h.style.color = "var(--accent)";
+    h.style.marginTop = "0";
+    box.appendChild(h);
+    document.body.insertBefore(box, document.body.firstChild.nextSibling);
+  }
+  box.innerHTML = `<h2 style="color:var(--accent); margin-top:0;">Mensaje / Message</h2>${messageHtml}`;
+}
+
+/* Counts (H1/H2) */
+function renderCounts(counts){
+  const { loads, devices } = counts || {};
+  // If you want to place these somewhere specific, add spans with ids:
+  // <span id="loadCount"></span> <span id="deviceCount"></span>
+  const lc = document.getElementById("loadCount");
+  const dc = document.getElementById("deviceCount");
+  if (lc) lc.textContent = loads ?? "";
+  if (dc) dc.textContent = devices ?? "";
+}
+
+/* Modal enlarge */
+function enlargeImg(img) {
+  const modal = document.getElementById('imgModal');
+  const target = document.getElementById('modalImg');
+  if (!modal || !target) return;
+  target.src = img.src;
+  modal.classList.add('active');
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById('imgModal');
+  if (modal){
+    modal.addEventListener('click', function(e) {
+      if (e.target === this) this.classList.remove('active');
+    });
+  }
+});
+
+/* Fetch + render pipeline */
+async function loadRegistry(){
+  const errBox = (msg) => {
+    const warn = document.createElement("div");
+    warn.style.color = "#ff6b6b";
+    warn.style.margin = "1em 0";
+    warn.style.fontWeight = "800";
+    warn.style.textAlign = "center";
+    warn.textContent = msg;
+    document.body.insertBefore(warn, document.body.firstChild.nextSibling);
+  };
+
+  try{
+    const res = await fetch(API_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    // Accept either {items:[...]} or raw [...]
+    const items = Array.isArray(data) ? data
+                : (data.items || data.data || []);
+    if (!Array.isArray(items)) throw new TypeError("items is not an array");
+
+    // Optional extras from your Apps Script
+    renderMessage(data.messageHtml || data.message || "");
+    renderCounts({ loads: data.loads ?? data.loadCount, devices: data.devices ?? data.deviceCount });
+
+    renderItems(items);
+  } catch (e){
+    errBox(`Error loading the registry list. Please try again later.\n${e}`);
+    console.error(e);
+  }
+}
+
+loadRegistry();
+</script>
+
+<!-- Image Modal (keep this once in your HTML) -->
+<div class="modal-img-bg" id="imgModal"><img id="modalImg" src=""></div>
