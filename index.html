@@ -1050,14 +1050,6 @@ async function loadPhases() {
     validItems.forEach(it => container.append(cardFor(it)));
   }
 }
-
-/* =========================
-   INIT
-   ========================= */
-document.addEventListener("DOMContentLoaded", async () => {
-  await loadMessage();
-  await loadPhases();
-});
 </script>
 
 <script>
