@@ -258,12 +258,41 @@ h2 { color: var(--cyan); margin-top: 1.7em; margin-bottom: 0.1em; }
   .item { width: 98vw; max-width: 99vw; }
   .registry-actions { gap: 1em; margin: 1.2em 0 1.2em 0; }
 }
+
+.pc-wrap{display:flex;gap:.9em;align-items:center}
+.pc-bar{
+  flex:1;height:16px;border-radius:999px;background:#00000040;
+  box-shadow: inset 0 1px 4px #0008;
+  overflow:hidden;
+}
+.pc-fill{
+  height:100%;width:0%;border-radius:999px;
+  background: linear-gradient(90deg, #00e676, #00c853);
+  box-shadow: 0 0 8px #00e67680;
+  transition: width .4s ease;
+}
+.pc-text{min-width:64px;text-align:right;color:var(--ink3);font-weight:800}
 </style>
 </head>
 <body>
 
   <h1>Iglesia Buenas Nuevas - Registro de sistemas de sonido</h1>
   <h2><span class="en" style="color:#aac;font-size:1.3em;">Good News Church - Sound System Registry</span></h2>
+
+<!-- PROJECT COMPLETION CARD -->
+<div id="projCard" class="top-card" style="margin:1.6em 0; border-top:4px solid var(--accent); display:none;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6em;">
+  <div>
+    <div style="font-weight:800;color:var(--accent)">Progreso Del Proyecto</div>
+    <div style="font-weight:600;color:var(--ink2);font-size:.92em;">Project Completion</div>
+  </div>
+</div>
+
+  <div class="pc-wrap">
+    <div class="pc-bar"><div class="pc-fill" id="pcFill"></div></div>
+    <div class="pc-text" id="pcLabel">0%</div>
+  </div>
+</div>
 
   <div id="messageCard" class="message-card"></div>
 
@@ -333,6 +362,7 @@ h2 { color: var(--cyan); margin-top: 1.7em; margin-bottom: 0.1em; }
     If an item isn’t visible in the registry, it has likely already been purchased.</span>
   </div>
   </div>
+  
 
   <!-- =========================
        Dynamic Phases (1–6)
@@ -1004,6 +1034,101 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadMessage();
   await loadPhases();
 });
+</script>
+
+<script>
+(function () {
+  const WEBAPP = "https://script.google.com/macros/s/AKfycbxTvUMgfiDCpxxtgXBpSaR0JxOAWcqUzXL_mvo6Q-k6Oae9GD5zUC3C9-RAZdKgYpV_yw/exec";
+  const KEY = "gn_device_id";
+
+  // --- Stable device id ---
+  let did = localStorage.getItem(KEY);
+  if (!did) {
+    did = (crypto.randomUUID && crypto.randomUUID()) ||
+         ("dev-" + Date.now().toString(36) + Math.random().toString(36).slice(2));
+    localStorage.setItem(KEY, did);
+  }
+
+  // --- Page params & basics ---
+  const url = new URL(window.location.href);
+  const phase  = url.searchParams.get("phase") || "";
+  const ref    = document.referrer ? document.referrer.slice(0, 500) : "";
+  const base = {
+    did,
+    page: "registry",
+    ref,
+    phase,
+    member: "0",
+    ua: navigator.userAgent || ""
+  };
+
+  // --- Fire-and-forget logger (opaque ok) ---
+  function logVisit(extra = {}) {
+    const qs = new URLSearchParams({ ...base, ...extra }).toString();
+    fetch(WEBAPP + "?" + qs, { mode: "no-cors", keepalive: true }).catch(() => {});
+  }
+
+  // --- Geo with quick timeout; fallback still logs ---
+  function withTimeout(p, ms) {
+    return Promise.race([
+      p,
+      new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))
+    ]);
+  }
+  withTimeout(fetch("https://ipapi.co/json/"), 1500)
+    .then(r => (r && r.ok) ? r.json() : null)
+    .then(g => logVisit({
+      country: g?.country_name || "",
+      region:  g?.region || g?.region_code || "",
+      city:    g?.city || ""
+    }))
+    .catch(() => {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      logVisit({ country: "", region: tz, city: "" });
+    });
+
+  // --- Progress bar updater (uses data.project_completion) ---
+  function applyProjectCompletion(data){
+    const raw = (data && data.project_completion) ? String(data.project_completion).trim() : "";
+    if (!raw) return;
+
+    let pct;
+    if (raw.endsWith("%")) pct = parseFloat(raw);
+    else {
+      const n = parseFloat(raw);
+      pct = (n <= 1) ? n * 100 : n;
+    }
+    pct = Math.max(0, Math.min(100, isNaN(pct) ? 0 : pct));
+
+    const card  = document.getElementById("projCard");
+    const fill  = document.getElementById("pcFill");
+    const label = document.getElementById("pcLabel");
+    if (card && fill && label) {
+      fill.style.width = pct.toFixed(0) + "%";
+      label.textContent = pct.toFixed(0) + "%";
+      card.style.display = "block";
+    }
+  }
+
+  // --- Fetch readable JSON for UI (NOT no-cors) ---
+  function fetchStatsAndRender(){
+    const statsUrl = WEBAPP + "?include_stats=1&_=" + Date.now();
+    fetch(statsUrl, { mode: "cors", cache: "no-store" })
+      .then(r => r.ok ? r.json() : Promise.reject("bad response"))
+      .then(data => {
+        // If you already have setProjectCompletion(), use it; else use internal:
+        (window.setProjectCompletion || applyProjectCompletion)(data);
+      })
+      .catch(() => {});
+  }
+
+  // Ensure DOM exists before we try to paint the bar
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", fetchStatsAndRender);
+  } else {
+    fetchStatsAndRender();
+  }
+})();
 </script>
 </body>
 </html>
