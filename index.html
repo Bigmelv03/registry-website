@@ -276,7 +276,7 @@ h2 { color: var(--cyan); margin-top: 1.7em; margin-bottom: 0.1em; }
 </head>
 <body>
 
-  <h1>Iglesia Buenas Nuevas - Registro de sistemas de sonido</h1>
+  <h1>Iglesia Buenas Nuevas - Registro De Sistemas De Sonido</h1>
   <h2><span class="en" style="color:#aac;font-size:1.3em;">Good News Church - Sound System Registry</span></h2>
 
 <!-- PROJECT COMPLETION CARD -->
@@ -295,6 +295,9 @@ h2 { color: var(--cyan); margin-top: 1.7em; margin-bottom: 0.1em; }
 </div>
 
   <div id="messageCard" class="message-card"></div>
+  
+  <!-- reveal after progress bar is set -->
+<div id="afterBar" style="display:none">
 
   <!-- =========================
      TESTIMONIO DE BENDICIÓN / BLESSING TESTIMONY
@@ -361,8 +364,29 @@ h2 { color: var(--cyan); margin-top: 1.7em; margin-bottom: 0.1em; }
     <span class="en" style="display:block;margin-top:.6em;color:#fff">Please order only from our official registry using the orange buttons or the QR code.
     If an item isn’t visible in the registry, it has likely already been purchased.</span>
   </div>
-  </div>
   
+  
+  <div class="registry-actions">
+  <div class="qr">
+    <img 
+      alt="QR – Registry" 
+      src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https://bigmelv03.github.io/registry-website/"
+    >
+    <div class="cap">
+      Escanea para ver el registro<br>
+      <small>Scan to view the registry</small>
+    </div>
+  </div>
+  <div class="flash-reminder">
+    <span>¡No olvides buscar cupones de descuento antes de comprar!</span><br><br>
+    <span style="font-size:0.98em">Don’t forget to check for coupons before you order!</span>
+  </div>
+  <a class="button" href="https://www.amazon.com/registries/gl/guest-view/1E6GZIQ5MG9GC?ref_=cm_sw_r_apann_ggr-subnav-share_148D7MWUGBR75LI9TF1M&language=en-US" target="_blank">
+    🛒 Ordenar aquí / Order Here
+  </a>
+</div>
+
+</div> <!-- /afterBar -->
 
   <!-- =========================
        Dynamic Phases (1–6)
@@ -1038,57 +1062,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 <script>
 (function () {
+  // Your deployed Apps Script /exec URL
   const WEBAPP = "https://script.google.com/macros/s/AKfycbxTvUMgfiDCpxxtgXBpSaR0JxOAWcqUzXL_mvo6Q-k6Oae9GD5zUC3C9-RAZdKgYpV_yw/exec";
-  const KEY = "gn_device_id";
 
-  // --- Stable device id ---
-  let did = localStorage.getItem(KEY);
-  if (!did) {
-    did = (crypto.randomUUID && crypto.randomUUID()) ||
-         ("dev-" + Date.now().toString(36) + Math.random().toString(36).slice(2));
-    localStorage.setItem(KEY, did);
-  }
-
-  // --- Page params & basics ---
-  const url = new URL(window.location.href);
-  const phase  = url.searchParams.get("phase") || "";
-  const ref    = document.referrer ? document.referrer.slice(0, 500) : "";
-  const base = {
-    did,
-    page: "registry",
-    ref,
-    phase,
-    member: "0",
-    ua: navigator.userAgent || ""
-  };
-
-  // --- Fire-and-forget logger (opaque ok) ---
-  function logVisit(extra = {}) {
-    const qs = new URLSearchParams({ ...base, ...extra }).toString();
-    fetch(WEBAPP + "?" + qs, { mode: "no-cors", keepalive: true }).catch(() => {});
-  }
-
-  // --- Geo with quick timeout; fallback still logs ---
-  function withTimeout(p, ms) {
-    return Promise.race([
-      p,
-      new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))
-    ]);
-  }
-  withTimeout(fetch("https://ipapi.co/json/"), 1500)
-    .then(r => (r && r.ok) ? r.json() : null)
-    .then(g => logVisit({
-      country: g?.country_name || "",
-      region:  g?.region || g?.region_code || "",
-      city:    g?.city || ""
-    }))
-    .catch(() => {
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
-      logVisit({ country: "", region: tz, city: "" });
-    });
-
-  // --- Progress bar updater (uses data.project_completion) ---
-  function applyProjectCompletion(data){
+  // Paint the progress bar
+  function setProjectCompletion(data){
     const raw = (data && data.project_completion) ? String(data.project_completion).trim() : "";
     if (!raw) return;
 
@@ -1110,23 +1088,29 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  // --- Fetch readable JSON for UI (NOT no-cors) ---
-  function fetchStatsAndRender(){
-    const statsUrl = WEBAPP + "?include_stats=1&_=" + Date.now();
-    fetch(statsUrl, { mode: "cors", cache: "no-store" })
+  // Load % first, then reveal content
+  function init(){
+    fetch(WEBAPP + "?include_stats=1", { mode: "cors", cache: "no-store" })
       .then(r => r.ok ? r.json() : Promise.reject("bad response"))
       .then(data => {
-        // If you already have setProjectCompletion(), use it; else use internal:
-        (window.setProjectCompletion || applyProjectCompletion)(data);
+        setProjectCompletion(data);                // 1) bar first
+        const wrap = document.getElementById("afterBar");
+        if (wrap) wrap.style.display = "block";    // 2) reveal static sections
+        // (Optional) If you have a function that loads phases, call it here:
+        if (typeof loadPhases === "function") loadPhases();
       })
-      .catch(() => {});
+      .catch(() => {
+        // Failsafe: if fetch fails, still show static stuff
+        const wrap = document.getElementById("afterBar");
+        if (wrap) wrap.style.display = "block";
+        if (typeof loadPhases === "function") loadPhases();
+      });
   }
 
-  // Ensure DOM exists before we try to paint the bar
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", fetchStatsAndRender);
+    document.addEventListener("DOMContentLoaded", init);
   } else {
-    fetchStatsAndRender();
+    init();
   }
 })();
 </script>
