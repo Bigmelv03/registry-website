@@ -1106,5 +1106,65 @@ async function loadPhases() {
   }
 })();
 </script>
+
+  1<script>
+(function () {
+  // ===== CONFIG =====
+  // Use the same GAS Exec as API_URL:
+  const WEBAPP = "https://script.google.com/macros/s/AKfycbxTvUMgfiDCpxxtgXBpSaR0JxOAWcqUzXL_mvo6Q-k6Oae9GD5zUC3C9-RAZdKgYpV_yw/exec";
+
+  // Stable device id (site-scoped)
+  const KEY = "gn_device_id";
+  let did = localStorage.getItem(KEY);
+  if (!did) {
+    did = (crypto.randomUUID && crypto.randomUUID()) ||
+          ("dev-" + Date.now().toString(36) + Math.random().toString(36).slice(2));
+    localStorage.setItem(KEY, did);
+  }
+
+  // Basics
+  const url   = new URL(window.location.href);
+  const phase = url.searchParams.get("phase") || "";
+  const ref   = document.referrer ? document.referrer.slice(0, 500) : "";
+  const ua    = navigator.userAgent || "";
+
+  function logVisit(extra = {}) {
+    const params = new URLSearchParams({
+      did: did,
+      page: "registry",
+      phase: phase,
+      ref: ref,
+      ua: ua,
+      ...extra
+    });
+    // fire-and-forget; never blocks paint
+    fetch(WEBAPP + "?" + params.toString(), { mode: "no-cors", keepalive: true })
+      .catch(() => {});
+  }
+
+  // Small helper: fast timeout so geo never stalls
+  function withTimeout(promise, ms) {
+    return Promise.race([
+      promise,
+      new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))
+    ]);
+  }
+
+  // Try quick geo; fallback to timezone so you at least get a region-ish hint
+  withTimeout(fetch("https://ipapi.co/json/"), 1500)
+    .then(r => (r && r.ok) ? r.json() : null)
+    .then(g => {
+      logVisit({
+        country: g?.country_name || "",
+        region:  g?.region || g?.region_code || "",
+        city:    g?.city || ""
+      });
+    })
+    .catch(() => {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      logVisit({ country: "", region: tz, city: "" });
+    });
+})();
+</script>
 </body>
 </html>
